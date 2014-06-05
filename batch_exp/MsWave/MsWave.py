@@ -1,9 +1,7 @@
 import sys
 from root import root
 def MsWave( k, query, sites, pivot):
-    
-    cost = 0
-    qcost = 0
+    cost = 0;    qcost = 0
     rt = root(k, query, pivot)
     for site in sites.values():
         levelq, s, e, qssum, qwssum, k = rt.send_first(site.siteid)
@@ -11,14 +9,13 @@ def MsWave( k, query, sites, pivot):
         rt.cp1(ub)
         cost += levelq.size + 1 + len(qssum) + len(qwssum) + len(ub)
         qcost += levelq.size
-    
+
     for site in sites.values():
         th = rt.cp2()
         rc = site.prune(th)
         rt.check1(site.siteid,rc)
         cost += 2
     rt.check2()
-    
     level_rs = []
     while( not rt.isdone() ):
         rs = rt.remainsite()
@@ -32,7 +29,7 @@ def MsWave( k, query, sites, pivot):
             rt.cp1(ub)
             cost += levelq.size + len(ub)
             qcost += levelq.size
-        
+
         for site in sites.values():
             if site.siteid not in rs:
                 continue
@@ -41,16 +38,16 @@ def MsWave( k, query, sites, pivot):
             rt.check1(site.siteid,rc)
             cost += 2
         rt.check2()
-    
+
     rs = rt.remainsite()
     level_rs += [len(rs)]
-    
+
     ans = []
     for site in sites.values():
         if site.siteid not in rs:
             continue
         ans += site.get_ans()
-    
-    cost += len(ans)
 
+    cost += len(ans)
+    del rt
     return ans, cost, level_rs, qcost

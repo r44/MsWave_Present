@@ -1,6 +1,6 @@
 import sys
 import scipy.io as spio
-from random import randrange
+from random import sample
 from random import seed
 from MsWave import MsWave
 from Site import Site
@@ -22,9 +22,9 @@ def gen_pivot(data,fname):
         pivot = [int(T*0.05*(i+1)) for i in range(20)]
     elif fname == 'origin/':
         pivot = [int(T/4+T/16*i) for i in range(20) if T/4+T/16*i <= T]
-    
+
     pivot[-1] = T
-    
+
     return pivot
 
     '''
@@ -44,9 +44,9 @@ def gen_pivot(data,fname):
 
 #main
 k = 1
-lenSeg = 500
-nSeg = 400
-N = lenSeg*nSeg
+NumForEach = 500
+NumMach = 400
+N = NumForEach*NumMach
 
 #data = (spio.loadmat('../LabelMe'))['data']
 data = (spio.loadmat('../ANNsift_base'))['data'].T
@@ -68,45 +68,31 @@ query = dict()
 pivot = dict()
 for ff in range(len(folder)):
     print folder[ff]
-    for i in range(nSeg):
-        #W = matrix( (spio.loadmat('../trans/X_'+str(lenSeg)+'_'+str(i+1)))['X'] ).T
-        #W = matrix( (spio.loadmat('../trans_ANNsquare/X_'+str(lenSeg)+'_'+str(i+1)))['X'] ).T
-        W = matrix( (spio.loadmat(path+folder[ff]+'X_'+str(lenSeg)+'_'+str(i+1)))['X'] ).T
+    for i in range(NumMach):
+        #W = matrix( (spio.loadmat('../trans/X_'+str(NumForEach)+'_'+str(i+1)))['X'] ).T
+        #W = matrix( (spio.loadmat('../trans_ANNsquare/X_'+str(NumForEach)+'_'+str(i+1)))['X'] ).T
+        W = matrix( (spio.loadmat(path+folder[ff]+'X_'+str(NumForEach)+'_'+str(i+1)))['X'] ).T
         query[i] = _query*W
-        
-        s = i*lenSeg;
-        e = s+lenSeg;
+
+        s = i*NumForEach;
+        e = s+NumForEach;
         cand = dict()
         for j in range(s,e):
             if j in q:
                 continue
             cand[j] = ((data[j]*W).tolist())[0]
-        
+
         pivot[i] = gen_pivot(data[s:e]*W,folder[ff])
         sites[i] = Site(i, cand.keys(), cand)
-    
+
     print pivot[0]
 
     ans, cost, level_rs, qcost =  MsWave(k, query, sites, pivot)
-    naive = size(_query)*nSeg + nSeg*k + k
+    naive = size(_query)*NumMach + NumMach*k + k
 
     print level_rs
     print 'ans = ' + str(ans)
     print 'cost = '+str(cost)+'/'+str(naive)+'('+str(float(cost)/naive)+')'
     print 'qcost = '+str(qcost)
     print ''
-
-'''
-d = []
-for i in xrange(N):
-    tmp = 0;
-    for l in xrange(Q):
-        tmp += sum( (k-j)**2 for (k,j) in zip(_query[l,:].tolist()[0], data[i]) )**0.5
-    d.append(tmp)
-
-a = sorted( xrange(N), key=lambda k: d[k] )
-sys.stderr.write('\n')
-a = [i for i in a if i not in q]
-print a[:k]
-'''
 

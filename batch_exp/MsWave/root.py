@@ -15,7 +15,7 @@ class root:
         self.query = query
         self.nquery = query[0].shape[0]
         self.T = query[0].shape[1]
-        
+
         self.pivot = pivot
         #self.pivot = [T/4+T/16*i for i in range(20) if T/4+T/16*i <= T]
         #self.pivot = [T/16+T/32*i for i in range(20) if T/16+T/32*i <= T]
@@ -43,7 +43,7 @@ class root:
         else:
             s = 0
             e = 0
-        
+
         return self.query[siteid][:,s:e], s, e
 
     def cp1(self, ub):
@@ -52,7 +52,7 @@ class root:
     def cp2(self):
         th = sorted(self.ub)[self.k-1]
         return th
-    
+
     def aaa(self):
         print self.level
 
@@ -67,7 +67,7 @@ class root:
         self.rc = 0
         self.level += 1
         self.ub = []
-    
+
     def remainsite(self):
         return self.rs
 
@@ -76,5 +76,4 @@ class root:
 
     def get_answer(self):
         return []
-
 

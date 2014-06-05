@@ -34,7 +34,7 @@ def gen_pivot():
 HomePath = '/nfs/master/01/r01922165/zzzzz/'
 FlickDir = 'Dataset/Image/Flickr/flickr/ParsedData/'
 OutPath = HomePath+'Results/Exp0605/Flickr/500_2000/MsWave/'
-FeaType=1
+FeaType=5
 if FeaType == 1:
     data = (spio.loadmat(HomePath+FlickDir+'1_ColorLayout192'))['data']
 elif FeaType == 2:
