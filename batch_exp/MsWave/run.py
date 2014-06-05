@@ -23,6 +23,8 @@ def gen_pivot():
            pivot[-i-1] += max(2**(tmp-i-1),2)
     for i in range(1,len(pivot)):
         pivot[i] += pivot[i-1]
+    if pivot[len(pivot)-1] != T:
+        pivot.append(T);
     return pivot
 
 #main

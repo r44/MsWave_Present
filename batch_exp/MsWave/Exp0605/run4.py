@@ -23,6 +23,8 @@ def gen_pivot():
            pivot[-i-1] += max(2**(tmp-i-1),2)
     for i in range(1,len(pivot)):
         pivot[i] += pivot[i-1]
+    if pivot[len(pivot)-1] != T:
+        pivot.append(T);
     return pivot
 
 #main
@@ -82,7 +84,6 @@ for NumMach in NumMachList:
         pivot[mid] = tmp_pivot
     record['Pivots'] = '_'.join(str(x) for x in tmp_pivot)
     del tmp_pivot
-
     for NumForEach in NumForEachList:
         record['NumForEach']=NumForEach
         # Distribute data to each site
