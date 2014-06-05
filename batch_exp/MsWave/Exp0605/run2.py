@@ -47,7 +47,7 @@ elif FeaType == 5:
     data = (spio.loadmat(HomePath+FlickDir+'5_EdgeHist150'))['data']
 OutFile = OutPath+str(FeaType)+'_0605.csv'
 fout = open(OutFile,'wb')
-headers = 'qid NumMachine NumForEach k LevelRs RepeatTime NaiveCost Cost QCost'.split()
+headers = 'qid NumMachine NumForEach k LevelRs Pivots RepeatTime NaiveCost Cost QCost'.split()
 dw = csv.DictWriter(fout,headers,restval='NULL');
 dw.writeheader()
 fout.close()
@@ -80,6 +80,7 @@ for NumMach in NumMachList:
     tmp_pivot = gen_pivot()
     for mid in range(NumMach):
         pivot[mid] = tmp_pivot
+    record['Pivots'] = '_'.join(str(x) for x in tmp_pivot)
     del tmp_pivot
 
     for NumForEach in NumForEachList:
