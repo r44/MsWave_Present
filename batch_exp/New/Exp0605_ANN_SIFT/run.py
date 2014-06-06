@@ -22,9 +22,10 @@ def gen_pivot(data):
 
 # Paramaters which wouldn't be changed.
 
-#data = (spio.loadmat('../LabelMe'))['data']
-#data = (spio.loadmat(HomePath+'ANNsift_base'))['data'].T
 HomePath = '/nfs/master/01/r01922165/zzzzz/'
+data = (spio.loadmat(HomePath+'ANNsift_base'))['data'].T
+"""
+#data = (spio.loadmat('../LabelMe'))['data']
 FlickDir = 'Dataset/Image/Flickr/flickr/ParsedData/'
 #WeightPath = HomePath+'trans_ANN/Weights/'
 OutPath = HomePath+'Results/Exp0605/Flickr/500_2000/New/'
@@ -40,6 +41,9 @@ elif FeaType == 4:
 elif FeaType == 5:
     data = (spio.loadmat(HomePath+FlickDir+'5_EdgeHist150'))['data']
 OutFile = OutPath+str(FeaType)+'_0605.csv'
+"""
+OutPath = HomePath+'Results/Exp0605/ANN_SIFT/200_5000/New/'
+OutFile = OutPath+'0605.csv'
 fout = open(OutFile,'wb')
 headers = 'qid WChoice NumMachine NumForEach k LevelRs Pivots RepeatTime MatCost NaiveCost Cost QCost'.split()
 dw = csv.DictWriter(fout,headers,restval='NULL');
@@ -47,9 +51,10 @@ dw.writeheader()
 fout.close()
 
 seed(302)
-MaxNumMach = 2000;
-MaxNumForEach = 500;
-WeightPath = HomePath+'trans_flickr/'+str(FeaType)+'/'+str(MaxNumForEach)+'_'+str(MaxNumMach)+'/'
+MaxNumForEach = 200;
+MaxNumMach = 5000;
+#WeightPath = HomePath+'trans_flickr/'+str(FeaType)+'/'+str(MaxNumForEach)+'_'+str(MaxNumMach)+'/'
+WeightPath = HomePath+'trans_ANN/Weights/'+str(MaxNumForEach)+'_'+str(MaxNumMach)+'/'
 FeaLen = data.shape[1]
 Total = data.shape[0]
 RepeatTime = 30;
@@ -58,18 +63,20 @@ QList = sample(xrange(Total), RepeatTime)
 #################################################################################
 # Paramaters to be tuned.
 
+"""
 # Para for Exp 0605.
 kList = [1,5,10,15,20]
 NumForEachList = [100,200,300,400,500]
 NumMachList = [100,500,1000,1500,2000]
-WChoiceList = [1,2]
-"""
 # Para for testing.
 kList = [1,2]
 NumMachList = [20,200]
 NumForEachList = [500]
-WChoiceList = [1,2]
 """
+kList = [1,5,10,15,20]
+NumForEachList = [200]
+NumMachList = [100,500,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000]
+WChoiceList = [1,2]
 #################################################################################
 record = dict()
 record['MatCost'] = FeaLen * (FeaLen-1) / 2;

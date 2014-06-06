@@ -1,0 +1,114 @@
+import sys
+import scipy.io as spio
+from random import randrange
+from random import seed
+from MsWave import MsWave
+from Site import Site
+from numpy import *
+
+sys.path.append('..')
+
+def gen_pivot(data,fname):
+    T = data.shape[1]
+    if fname == '3_SimpDiv/':
+        pivot = [int(T*0.1*(i+1)) for i in range(10)]
+    elif fname == '4_Half/':
+        pivot = [int(T*0.2*(i+1)) for i in range(5)]
+    elif fname == '5_Quad/':
+        pivot = [int(T*0.25*(i+1)) for i in range(4)]
+    elif fname == '6_Half10/':
+        pivot = [int(T*0.1*(i+1)) for i in range(4,10)]
+    elif fname == '7_HalfQuad/':
+        pivot = [int(T*0.25*(i+1)) for i in range(1,4)]
+    elif fname == '9_Five/':
+        pivot = [int(T*0.05*(i+1)) for i in range(20)]
+    elif fname == 'origin/':
+        pivot = [int(T/4+T/16*i) for i in range(20) if T/4+T/16*i <= T]
+
+    pivot[-1] = T
+
+    return pivot
+
+    '''
+    norms = [linalg.norm(data[:,k])**2 for k in xrange(T)]
+    norm_all = sum(norms)
+    tmp = 0
+    for j in xrange(T):
+        tmp += norms[j]
+        if tmp/norm_all > 0.95:
+            p90 = j
+            break
+
+    pivot = [p90+T/16*i for i in xrange(16) if p90+T/16*i <= T]
+    pivot[-1] = T
+    return pivot
+    '''
+
+#main
+k = 1
+lenSeg = 500
+nSeg = 400
+N = lenSeg*nSeg
+
+#data = (spio.loadmat('../LabelMe'))['data']
+data = (spio.loadmat('../ANNsift_base'))['data'].T
+
+seed(304)
+Q = 1
+q = [randrange(N) for i in range(Q)]
+#q = [4]
+
+#print 'query id = ' + str(q)
+_query = matrix(data[q])
+
+path = '../trans_ANN/Weights/500_400/'
+#folder = ['3_SimpDiv/','4_Half/','5_Quad/','6_Half10/','7_HalfQuad/','9_Five/','origin/']
+folder = ['origin/']
+
+sites = dict()
+query = dict()
+pivot = dict()
+for ff in range(len(folder)):
+    print folder[ff]
+    for i in range(nSeg):
+        #W = matrix( (spio.loadmat('../trans/X_'+str(lenSeg)+'_'+str(i+1)))['X'] ).T
+        #W = matrix( (spio.loadmat('../trans_ANNsquare/X_'+str(lenSeg)+'_'+str(i+1)))['X'] ).T
+        W = matrix( (spio.loadmat(path+folder[ff]+'X_'+str(lenSeg)+'_'+str(i+1)))['X'] ).T
+        query[i] = _query*W
+
+        s = i*lenSeg;
+        e = s+lenSeg;
+        cand = dict()
+        for j in range(s,e):
+            if j in q:
+                continue
+            cand[j] = ((data[j]*W).tolist())[0]
+
+        pivot[i] = gen_pivot(data[s:e]*W,folder[ff])
+        sites[i] = Site(i, cand.keys(), cand)
+
+    print pivot[0]
+
+    ans, cost, level_rs, qcost =  MsWave(k, query, sites, pivot)
+    naive = size(_query)*nSeg + nSeg*k + k
+
+    print level_rs
+    print 'ans = ' + str(ans)
+    print 'cost = '+str(cost)+'/'+str(naive)+'('+str(float(cost)/naive)+')'
+    print 'qcost = '+str(qcost)
+    print ''
+
+'''
+d = []
+for i in xrange(N):
+    tmp = 0;
+    for l in xrange(Q):
+        tmp += sum( (k-j)**2 for (k,j) in zip(_query[l,:].tolist()[0], data[i]) )**0.5
+    d.append(tmp)
+
+a = sorted( xrange(N), key=lambda k: d[k] )
+sys.stderr.write('\n')
+a = [i for i in a if i not in q]
+print a[:k]
+'''
+
