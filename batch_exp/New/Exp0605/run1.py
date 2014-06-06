@@ -59,18 +59,17 @@ QList = sample(xrange(Total), RepeatTime)
 # Paramaters to be tuned.
 
 # Para for Exp 0605.
-"""
 kList = [1,5,10,15,20]
 NumForEachList = [100,200,300,400,500]
 NumMachList = [100,500,1000,1500,2000]
 WChoiceList = [1,2]
 """
-
 # Para for testing.
 kList = [1,2]
 NumMachList = [20,200]
 NumForEachList = [500]
 WChoiceList = [1,2]
+"""
 #################################################################################
 record = dict()
 record['MatCost'] = FeaLen * (FeaLen-1) / 2;

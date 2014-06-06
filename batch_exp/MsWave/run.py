@@ -33,6 +33,7 @@ def gen_pivot():
 # Paramaters which wouldn't be changed.
 
 #data = (spio.loadmat('../LabelMe'))['data']
+#data = (spio.loadmat(HomePath+'ANNsift_base'))['data'].T
 HomePath = '/nfs/master/01/r01922165/zzzzz/'
 FlickDir = 'Dataset/Image/Flickr/flickr/ParsedData/'
 OutPath = HomePath+'Results/Exp0605/Flickr/500_2000/MsWave/'
@@ -49,7 +50,7 @@ elif FeaType == 5:
     data = (spio.loadmat(HomePath+FlickDir+'5_EdgeHist150'))['data']
 OutFile = OutPath+str(FeaType)+'_0605.csv'
 fout = open(OutFile,'wb')
-headers = 'qid NumMachine NumForEach k LevelRs RepeatTime NaiveCost Cost QCost'.split()
+headers = 'qid NumMachine NumForEach k LevelRs Pivots RepeatTime NaiveCost Cost QCost'.split()
 dw = csv.DictWriter(fout,headers,restval='NULL');
 dw.writeheader()
 fout.close()
@@ -64,6 +65,7 @@ QList = sample(xrange(Total), RepeatTime)
 #################################################################################
 # Paramaters to be tuned.
 
+"""
 kList = [1,5,10,15,20]
 NumForEachList = [100,200,300,400,500]
 NumMachList = [100,500,1000,1500,2000]
@@ -71,7 +73,6 @@ NumMachList = [100,500,1000,1500,2000]
 kList = [2]
 NumMachList = [2]
 NumForEachList = [2]
-"""
 #################################################################################
 
 record = dict()
@@ -82,6 +83,7 @@ for NumMach in NumMachList:
     tmp_pivot = gen_pivot()
     for mid in range(NumMach):
         pivot[mid] = tmp_pivot
+    record['Pivots'] = '_'.join(str(x) for x in tmp_pivot)
     del tmp_pivot
 
     for NumForEach in NumForEachList:
