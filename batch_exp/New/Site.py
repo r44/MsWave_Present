@@ -2,6 +2,8 @@ import numpy
 class Site:
 
     def __init__(self, siteid, candlist, cand):
+        self.raw_candlist = candlist
+        self.raw_cand = cand
         self.siteid = siteid
         self.candlist = candlist
         self.cand = cand
@@ -52,7 +54,16 @@ class Site:
     def prune(self, th):
         self.candlist = [sid for sid in self.candlist if self.lb[sid] <= th]
         return len(self.candlist)
-    
+
     def get_ans(self):
         return self.candlist
 
+    def init_except_data(self):
+        self.accdist = dict()
+        self.qssum = 0
+        self.qwssum = 0
+        self.k = 0
+        self.ub = 0
+        self.lb = 0
+        self.candlist = self.raw_candlist
+        self.cand = self.raw_cand
