@@ -1,3 +1,4 @@
+# http://nbviewer.ipython.org/github/jrjohansson/scientific-python-lectures/blob/master/Lecture-4-Matplotlib.ipynb
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
@@ -18,8 +19,9 @@ phi_m = np.linspace(0, 2*pi, 100)
 phi_p = np.linspace(0, 2*pi, 100)
 X,Y = np.meshgrid(phi_p, phi_m)
 Z = flux_qubit_potential(X, Y).T
-
-
+# X is the index for row, Y is for each column.
+#print phi_m
+#print Z
 
 
 fig = plt.figure(figsize=(8,6))

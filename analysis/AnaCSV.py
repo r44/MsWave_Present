@@ -3,18 +3,14 @@ import collections
 
 from itertools import groupby
 import DataFrames
+from Draw3D import Draw3D
 
 def AnalyzeFile(filename):
 ## Start to analyze the file.
     DataFs = DataFrames.DataFrames(filename)
-
-    print DataFs.KList
-    print DataFs.NumForEachList
-    print DataFs.NumMachList
-
     DataFs.SimpStat()
-    DataFs.PrintStat()
-#    CalSimpStat(KList, NumMachList, NumForEachList, RepeatTime, WeightList, data)
+#    DataFs.PrintStat()
+    Draw3D(DataFs)
 
 
 def main():

@@ -30,6 +30,7 @@ class DataFrames:
                 rowdict['k'] = k;
                 rowdict['qid'] = qid;
                 rowdict['NumForEach'] = NumForEach;
+                self.NumForEach = NumForEach; # TODO Change if this is variable.
                 rowdict['NumMachine'] = NumMach;
                 rowdict['WChoice'] = Wei;
                 rowdict['RepeatTime'] = Timeidx;
