@@ -52,24 +52,48 @@ class DataFrames:
         self.data = data;
 
     def SimpStat(self):
-        #pprint.pprint( self.data)
-
-
-        sortkeyfn = operator.itemgetter('k','NumForEach','NumMachine','WChoice');
+        sortkeyfn = operator.itemgetter('WChoice','k','NumForEach','NumMachine');
         self.data.sort(key=sortkeyfn);  # Need sort before groupby.
 
         results = collections.defaultdict(dict);
         for key, group in groupby(self.data, key = sortkeyfn):
             Cost = []; NaiveCost = []; RsList = list();
             for row in group:
-                Cost.append(row['Cost'])
-                NaiveCost.append(row['NaiveCost'])
+                Cost.append(float(row['Cost']))
+                NaiveCost.append(float(row['NaiveCost']))
                 tmp_arr = np.zeros(self.NumLevel)
                 for i in xrange(len(row['LevelRs'])):
-                    tmp_arr[i] = row['LevelRs'][i]
+                    tmp_arr[i] = float(row['LevelRs'][i])
                 RsList.append(tmp_arr)
             results[key] = {'Cost':np.array(Cost), 'NaiveCost':np.array(NaiveCost), 'LevelRs':np.array(RsList)}
+            ratiolist = results[key]['Cost']/results[key]['NaiveCost']
+            results[key]['CostRatio'] = np.mean(ratiolist)
+            results[key]['CostRatioVar'] = np.var(ratiolist)
+            results[key]['CostRatioStd'] = np.std(ratiolist)
+            ratiolist = (results[key]['Cost']+self.MatCost)/results[key]['NaiveCost']
+            results[key]['AcCostRatio'] = np.mean(ratiolist)
+            results[key]['AcCostRatioVar'] = np.var(ratiolist)
+            results[key]['AcCostRatioStd'] = np.std(ratiolist)
 
-        for key,value in results.iteritems():
-            print value['LevelRs'].shape
+            ratiolist = np.mean(results[key]['LevelRs'], axis = 0)
+            results[key]['LevelRsMean'] = np.mean(results[key]['LevelRs'], axis = 0)
+            results[key]['LevelRsVar'] = np.var(results[key]['LevelRs'], axis = 0)
+            results[key]['LevelRsStd'] = np.std(results[key]['LevelRs'], axis = 0)
+        self.results = results;
+
+    def PrintStat(self):
+        for key in sorted(self.results.keys()):
+            print key
+            continue
+            value = self.results[key]
+            print key
+            """
+            print value['Cost']
+            print value['NaiveCost']
+            """
+            print value['CostRatio']
+            print value['CostRatioStd']
+            print value['AcCostRatio']
+            print value['LevelRsMean']
+            print value['LevelRsStd']
         print self.NumLevel

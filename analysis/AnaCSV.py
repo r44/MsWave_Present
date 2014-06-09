@@ -13,6 +13,7 @@ def AnalyzeFile(filename):
     print DataFs.NumMachList
 
     DataFs.SimpStat()
+    DataFs.PrintStat()
 #    CalSimpStat(KList, NumMachList, NumForEachList, RepeatTime, WeightList, data)
 
 
