@@ -64,5 +64,5 @@ def Draw3D(DataFs):
         """
 #        ax.view_init(0, 135)
         Wei = Wei.replace("/","")
-        fig.savefig(Wei+".png")
+#        fig.savefig(Wei+".png")
 

@@ -85,16 +85,14 @@ class DataFrames:
     def PrintStat(self):
         for key in sorted(self.results.keys()):
             print key
-            continue
-            value = self.results[key]
-            print key
             """
+            value = self.results[key]
             print value['Cost']
             print value['NaiveCost']
-            """
             print value['CostRatio']
             print value['CostRatioStd']
             print value['AcCostRatio']
             print value['LevelRsMean']
             print value['LevelRsStd']
         print self.NumLevel
+            """
