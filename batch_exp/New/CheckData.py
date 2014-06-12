@@ -6,6 +6,7 @@ from random import seed
 sys.path.append('..')
 from MsWave import MsWave
 from Site import Site
+from Arff2Mat import Arff2Mat
 from numpy import *
 from math import log
 import csv
@@ -25,48 +26,46 @@ def gen_pivot(data):
 #data = (spio.loadmat('../LabelMe'))['data']
 HomePath = '/nfs/master/01/r01922165/zzzzz/'
 FlickDir = 'Dataset/Image/Flickr/flickr/ParsedData/'
+ArffDir = 'Dataset/Sound/0611/'
 #WeightPath = HomePath+'trans_ANN/Weights/'
 OutPath = HomePath+'Results/Exp0605/Flickr/500_2000/New/'
-FeaType=6
-if FeaType == 1:
-    data = (spio.loadmat(HomePath+FlickDir+'1_ColorLayout192'))['data']
-elif FeaType == 2:
-    data = (spio.loadmat(HomePath+FlickDir+'2_ColorStruct256'))['data']
-elif FeaType == 3:
-    data = (spio.loadmat(HomePath+FlickDir+'3_ScalColor256'))['data']
-elif FeaType == 4:
-    data = (spio.loadmat(HomePath+FlickDir+'4_HomoText43'))['data']
-elif FeaType == 5:
-    data = (spio.loadmat(HomePath+FlickDir+'5_EdgeHist150'))['data']
-elif FeaType == 6:
-    data = (spio.loadmat(HomePath+'ANNsift_base'))['data'].T
+FeaTypeList = range(7,11);
+for FeaType in FeaTypeList:
+    if FeaType == 1:
+        data = (spio.loadmat(HomePath+FlickDir+'1_ColorLayout192'))['data']
+    elif FeaType == 2:
+        data = (spio.loadmat(HomePath+FlickDir+'2_ColorStruct256'))['data']
+    elif FeaType == 3:
+        data = (spio.loadmat(HomePath+FlickDir+'3_ScalColor256'))['data']
+    elif FeaType == 4:
+        data = (spio.loadmat(HomePath+FlickDir+'4_HomoText43'))['data']
+    elif FeaType == 5:
+        data = (spio.loadmat(HomePath+FlickDir+'5_EdgeHist150'))['data']
+    elif FeaType == 0:
+        data = (spio.loadmat(HomePath+'ANNsift_base'))['data'].T
+    elif FeaType == 6:
+        data = Arff2Mat(HomePath+ArffDir+'msd-mvd-v1.0.arff/msd-mvd.arff')
+    elif FeaType == 7:
+        data = Arff2Mat(HomePath+ArffDir+'msd-rh-v1.0.arff/msd-rh.arff')
+    elif FeaType == 8:
+        data = Arff2Mat(HomePath+ArffDir+'msd-rp-v1.0.arff/msd-rp.arff')
+    elif FeaType == 9:
+        data = Arff2Mat(HomePath+ArffDir+'msd-ssd-v1.0.arff/msd-ssd.arff')
+    elif FeaType == 10:
+        data = Arff2Mat(HomePath+ArffDir+'msd-trh-v1.0.arff/msd-trh.arff')
 
-
-"""
-Total = data.shape[0]
-
-dis = [];
-sigma = 0;
-
-for i in xrange(1000l):
-    for j in xrange(i+1,i+100):
-        dis.append( linalg.norm(data[i,:] - data[j,:]))
-        sigma += dis[len(dis)-1]
-meand = sigma / (1e6)
-
-print dis
-print meand
-print mean(dis)
-"""
-#print mean(data,axis=0)
-#print std(data,axis=0)
-print std(data,axis=0)/mean(data,axis=0)
+    print data.shape
+#    print mean(data,axis=0)
+#    print std(data,axis=0)
+#    print std(data,axis=0)/mean(data,axis=0)
+#    print mean(std(data,axis=0)/mean(data,axis=0))
+    print sum((std(data,axis=0)/mean(data,axis=0))**2)/data.shape[1]
 
 exit()
 
 OutFile = OutPath+str(FeaType)+'_0605.csv'
 fout = open(OutFile,'wb')
-headers = 'qid WChoice NumMachine NumForEach k LevelRs Pivots RepeatTime MatCost NaiveCost Cost QCost'.split()
+headers = 'qid WChoice NHumMachine NumForEach k LevelRs Pivots RepeatTime MatCost NaiveCost Cost QCost'.split()
 dw = csv.DictWriter(fout,headers,restval='NULL');
 dw.writeheader()
 fout.close()

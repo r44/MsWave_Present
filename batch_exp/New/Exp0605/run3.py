@@ -60,7 +60,9 @@ QList = sample(xrange(Total), RepeatTime)
 
 # Para for Exp 0605.
 kList = [1,5,10,15,20]
+kList = [1,10,20]
 NumForEachList = [100,200,300,400,500]
+NumForEachList = [MaxNumForEach]
 NumMachList = [100,500,1000,1500,2000]
 WChoiceList = [1,2]
 """

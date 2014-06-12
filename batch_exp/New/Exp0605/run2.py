@@ -39,7 +39,7 @@ elif FeaType == 4:
     data = (spio.loadmat(HomePath+FlickDir+'4_HomoText43'))['data']
 elif FeaType == 5:
     data = (spio.loadmat(HomePath+FlickDir+'5_EdgeHist150'))['data']
-OutFile = OutPath+str(FeaType)+'_0605.csv'
+OutFile = OutPath+str(FeaType)+'_0605_onlyHeur.csv'
 fout = open(OutFile,'wb')
 headers = 'qid WChoice NumMachine NumForEach k LevelRs Pivots RepeatTime MatCost NaiveCost Cost QCost'.split()
 dw = csv.DictWriter(fout,headers,restval='NULL');
@@ -60,7 +60,9 @@ QList = sample(xrange(Total), RepeatTime)
 
 # Para for Exp 0605.
 kList = [1,5,10,15,20]
+kList = [1,10,20]
 NumForEachList = [100,200,300,400,500]
+NumForEachList = [MaxNumForEach]
 NumMachList = [100,500,1000,1500,2000]
 WChoiceList = [1,2]
 """
