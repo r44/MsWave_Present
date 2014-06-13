@@ -15,17 +15,17 @@ import CoordDescent as cd
 def gen_pivot(data):
     T = data.shape[1]
     # Origin
-    pivot = [int(T/2+T/32*i) for i in range(40) if T/2+T/32*i <= T]
+    pivot = [int(T/4+T/32*i) for i in range(40) if T/2+T/32*i <= T]
     pivot[-1] = T
     return pivot
 
 def update_pivot(level_rs, pivot, cnt, level_rs_est):
     level_rs += [1] * (len(pivot) - len(level_rs))
-    f = interp1d( pivot, level_rs, kind='linear')
+    f = interp1d( pivot, level_rs, kind='cubic')
     tmp = f( range(0,len(level_rs_est)) )
     return [ (cnt*old + new)/(cnt+1) for (old,new) in zip(level_rs_est, tmp) ]
 
-
+    
 
 #main
 #################################################################################
@@ -38,7 +38,6 @@ data = (spio.loadmat(HomePath+'ANNsift_base'))['data'].T
 FlickDir = 'Dataset/Image/Flickr/flickr/ParsedData/'
 WeightPath = HomePath+'trans_ANN/Weights/500_400/'
 OutPath = HomePath+'Results/Exp0605/Flickr/500_2000/New/'
-OutPath = HomePath+'Results/Exp0614/ANN_SIFT/Coord/'
 FeaType=0
 if FeaType == 1:
     data = (spio.loadmat(HomePath+FlickDir+'1_ColorLayout192'))['data']
@@ -50,8 +49,7 @@ elif FeaType == 4:
     data = (spio.loadmat(HomePath+FlickDir+'4_HomoText43'))['data']
 elif FeaType == 5:
     data = (spio.loadmat(HomePath+FlickDir+'5_EdgeHist150'))['data']
-#OutFile = OutPath+str(FeaType)+'_0605.csv'
-OutFile = OutPath+'0614_00.csv'
+OutFile = OutPath+str(FeaType)+'_0605.csv'
 #fout = open(OutFile,'wb')
 headers = 'qid WChoice NumMachine NumForEach k LevelRs Pivots RepeatTime MatCost NaiveCost Cost QCost'.split()
 #dw = csv.DictWriter(fout,headers,restval='NULL');
@@ -59,33 +57,31 @@ headers = 'qid WChoice NumMachine NumForEach k LevelRs Pivots RepeatTime MatCost
 #fout.close()
 
 seed(302)
-MaxNumMach = 5000;
-MaxNumForEach = 200;
+MaxNumMach = 400;
+MaxNumForEach = 500;
 #WeightPath = HomePath+'trans_flickr/'+str(FeaType)+'/'+str(MaxNumForEach)+'_'+str(MaxNumMach)+'/'
 FeaLen = data.shape[1]
 Total = data.shape[0]
-RepeatTime = 100;
-QList = sample(xrange(Total), RepeatTime)
+RepeatTime = 500;
+#QList = sample(xrange(Total), RepeatTime)
+QList = [304]*RepeatTime
 
 #################################################################################
 # Paramaters to be tuned.
 
 # Para for Exp 0605.
-kList = [1,10,20]
-NumForEachList = [MaxNumForEach]
-NumMachList = [500,1000,1500,2000];#0
-NumMachList = [2500,3000,3500]; #1
-NumMachList = [4000,4500,5000]; #2
-WChoiceList = [1]   #0
-WChoiceList = [2]   #1
+"""
+kList = [1,5,10,15,20]
+NumForEachList = [100,200,300,400,500]
+NumMachList = [100,500,1000,1500,2000]
+WChoiceList = [1,2]
 """
 
 # Para for testing.
-kList = [1,2]
+kList = [1]
 NumMachList = [400]
 NumForEachList = [500]
 WChoiceList = [1]
-"""
 #################################################################################
 record = dict()
 record['MatCost'] = FeaLen * (FeaLen-1) / 2;
@@ -126,7 +122,7 @@ for WChoice in WChoiceList:
                     cand[j] = ((data[j]*WDict[mid]).tolist())[0]
                 sites[mid] = Site(mid, cand.keys(), cand)
 
-
+            
             for k in kList:
                 record['k'] = k
 
@@ -136,10 +132,10 @@ for WChoice in WChoiceList:
                     qid = QList[time]
                     record['qid'] = qid
                     query = dict()
-
+                    
                     for mid in range(NumMach):
                         query[mid] = matrix(data[qid])*WDict[mid]
-
+                    
                     ans, cost, level_rs, qcost =  MsWave(k, query, sites, pivot)
                     naive = size(query[0])*NumMach + NumMach*k + k
                     record['Cost'] = cost

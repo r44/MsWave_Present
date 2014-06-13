@@ -37,6 +37,7 @@ HomePath = '/nfs/master/01/r01922165/zzzzz/'
 data = (spio.loadmat(HomePath+'ANNsift_base'))['data'].T
 FlickDir = 'Dataset/Image/Flickr/flickr/ParsedData/'
 WeightPath = HomePath+'trans_ANN/Weights/500_400/'
+WeightPath = HomePath+'trans_ANN/Weights/200_5000/'
 OutPath = HomePath+'Results/Exp0605/Flickr/500_2000/New/'
 OutPath = HomePath+'Results/Exp0614/ANN_SIFT/Coord/'
 FeaType=0
@@ -52,11 +53,11 @@ elif FeaType == 5:
     data = (spio.loadmat(HomePath+FlickDir+'5_EdgeHist150'))['data']
 #OutFile = OutPath+str(FeaType)+'_0605.csv'
 OutFile = OutPath+'0614_00.csv'
-#fout = open(OutFile,'wb')
+fout = open(OutFile,'wb')
 headers = 'qid WChoice NumMachine NumForEach k LevelRs Pivots RepeatTime MatCost NaiveCost Cost QCost'.split()
-#dw = csv.DictWriter(fout,headers,restval='NULL');
-#dw.writeheader()
-#fout.close()
+dw = csv.DictWriter(fout,headers,restval='NULL');
+dw.writeheader()
+fout.close()
 
 seed(302)
 MaxNumMach = 5000;
@@ -74,10 +75,7 @@ QList = sample(xrange(Total), RepeatTime)
 kList = [1,10,20]
 NumForEachList = [MaxNumForEach]
 NumMachList = [500,1000,1500,2000];#0
-NumMachList = [2500,3000,3500]; #1
-NumMachList = [4000,4500,5000]; #2
 WChoiceList = [1]   #0
-WChoiceList = [2]   #1
 """
 
 # Para for testing.
@@ -148,10 +146,10 @@ for WChoice in WChoiceList:
                     record['LevelRs'] = '_'.join(str(x) for x in level_rs)
                     record['RepeatTime']=time
                     record['Pivots'] = '_'.join(str(x) for x in pivot[0])
-                    #fout = open(OutFile,'ab')
-                    #dw = csv.DictWriter(fout,headers,restval='NULL');
-                    #dw.writerow(record)
-                    #fout.close()
+                    fout = open(OutFile,'ab')
+                    dw = csv.DictWriter(fout,headers,restval='NULL');
+                    dw.writerow(record)
+                    fout.close()
 
                     level_rs_est = update_pivot( [NumMach]+level_rs, [0]+pivot[0], cnt, level_rs_est )
                     cnt += 1
