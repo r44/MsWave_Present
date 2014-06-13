@@ -14,7 +14,7 @@ class Site:
         self.lb = 0
         self.T = len(cand[candlist[0]])
 
-    def cp_first(self, query, s, e, qssum, k):
+    def prp1_first(self, query, s, e, qssum, k):
         self.k = k
         self.qssum = qssum
         for sid in self.candlist:
@@ -22,9 +22,9 @@ class Site:
             for q in range(query.shape[0]):
                 self.accdist[sid][q] = sum( (i-j)**2 for (i,j) in zip(query[q,:].tolist()[0], self.cand[sid][s:e]))
         self.ub, self.lb = self.cal_bound( query, e)
-        return sorted(self.ub.values())[:self.k]
+        return [min(self.ub.values())]
 
-    def cp_later(self, query, s, e):
+    def prp1_later(self, query, s, e):
         for q in range(query.shape[0]):
             self.qssum[q] -= sum( i**2 for i in query[q,:].tolist()[0])
             if e == self.T:
@@ -34,7 +34,11 @@ class Site:
             for q in range(query.shape[0]):
                 self.accdist[sid][q] += sum( (i-j)**2 for (i,j) in zip(query[q,:].tolist()[0], self.cand[sid][s:e]))
         self.ub, self.lb = self.cal_bound( query, e)
-        return sorted(self.ub.values())[:self.k]
+        return [min(self.ub.values())]
+    
+    def prp2(self, prp_th):
+        tmp = min(self.ub.values())
+        return [b for b in self.ub.values() if b < prp_th and b > tmp]
 
     def cal_bound(self,query,e):
         ub = dict()
@@ -54,7 +58,7 @@ class Site:
     def prune(self, th):
         self.candlist = [sid for sid in self.candlist if self.lb[sid] <= th]
         return len(self.candlist)
-
+    
     def get_ans(self):
         return self.candlist
 

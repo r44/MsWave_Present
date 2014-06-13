@@ -25,7 +25,7 @@ class root:
         self.rs[siteid] = 0
         s = 0
         e = self.pivot[siteid][0]
-        
+
         qssum = [numpy.linalg.norm(self.query[siteid][i,e:], ord='fro')**2 for i in range(self.query[siteid].shape[0])]
         return self.query[siteid][:,0:e], 0, e, qssum, self.k
 
@@ -40,6 +40,13 @@ class root:
         
         return self.query[siteid][:,s:e], s, e
 
+    def cp1(self, ub):
+        self.ub += ub
+
+    def cp2(self):
+        th = sorted(self.ub)[self.k-1]
+        return th
+    
     def prp1(self, ub):
         self.ub += ub
 
@@ -70,4 +77,5 @@ class root:
 
     def get_answer(self):
         return []
+
 

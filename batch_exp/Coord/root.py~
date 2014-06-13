@@ -26,6 +26,9 @@ class root:
         s = 0
         e = self.pivot[siteid][0]
         
+        print len(self.query)
+        print self.query.keys()
+
         qssum = [numpy.linalg.norm(self.query[siteid][i,e:], ord='fro')**2 for i in range(self.query[siteid].shape[0])]
         return self.query[siteid][:,0:e], 0, e, qssum, self.k
 
