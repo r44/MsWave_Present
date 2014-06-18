@@ -52,7 +52,7 @@ elif FeaType == 4:
 elif FeaType == 5:
     data = (spio.loadmat(HomePath+FlickDir+'5_EdgeHist150'))['data']
 #OutFile = OutPath+str(FeaType)+'_0605.csv'
-OutFile = OutPath+'0614_21.csv'
+OutFile = OutPath+'0614_21_1k.csv'
 fout = open(OutFile,'wb')
 headers = 'qid WChoice NumMachine NumForEach k LevelRs Pivots RepeatTime MatCost NaiveCost Cost QCost'.split()
 dw = csv.DictWriter(fout,headers,restval='NULL');
@@ -65,7 +65,7 @@ MaxNumForEach = 200;
 #WeightPath = HomePath+'trans_flickr/'+str(FeaType)+'/'+str(MaxNumForEach)+'_'+str(MaxNumMach)+'/'
 FeaLen = data.shape[1]
 Total = data.shape[0]
-RepeatTime = 100;
+RepeatTime = 1000;
 QList = sample(xrange(Total), RepeatTime)
 
 #################################################################################

@@ -15,7 +15,7 @@ import CoordDescent as cd
 def gen_pivot(data):
     T = data.shape[1]
     # Origin
-    pivot = [int(T/2+T/32*i) for i in range(40) if T/2+T/32*i <= T]
+    pivot = [int(T/10+T/10*i) for i in range(40) if T/10+T/10*i <= T]
     pivot[-1] = T
     return pivot
 
@@ -34,13 +34,14 @@ def update_pivot(level_rs, pivot, cnt, level_rs_est):
 
 #data = (spio.loadmat('../LabelMe'))['data']
 HomePath = '/nfs/master/01/r01922165/zzzzz/'
-data = (spio.loadmat(HomePath+'ANNsift_base'))['data'].T
+#data = (spio.loadmat(HomePath+'ANNsift_base'))['data'].T
 FlickDir = 'Dataset/Image/Flickr/flickr/ParsedData/'
-WeightPath = HomePath+'trans_ANN/Weights/500_400/'
-WeightPath = HomePath+'trans_ANN/Weights/200_5000/'
-OutPath = HomePath+'Results/Exp0605/Flickr/500_2000/New/'
-OutPath = HomePath+'Results/Exp0614/ANN_SIFT/Coord/'
-FeaType=0
+#WeightPath = HomePath+'trans_ANN/Weights/500_400/'
+#WeightPath = HomePath+'trans_ANN/Weights/200_5000/'
+WeightPath = HomePath+'trans_flickr/3/500_2000/'
+OutPath = HomePath+'Results/Exp0618/Flickr_3/'
+#OutPath = HomePath+'Results/Exp0614/ANN_SIFT/Coord/'
+FeaType = 3
 if FeaType == 1:
     data = (spio.loadmat(HomePath+FlickDir+'1_ColorLayout192'))['data']
 elif FeaType == 2:
@@ -50,9 +51,8 @@ elif FeaType == 3:
 elif FeaType == 4:
     data = (spio.loadmat(HomePath+FlickDir+'4_HomoText43'))['data']
 elif FeaType == 5:
-    data = (spio.loadmat(HomePath+FlickDir+'5_EdgeHist150'))['data']
-#OutFile = OutPath+str(FeaType)+'_0605.csv'
-OutFile = OutPath+'0614_20_1k.csv'
+    data = (spio.loadmat(dfsdHomePath+FlickDir+'5_EdgeHist150'))['data']
+OutFile = OutPath+str('0618_00.csv')
 fout = open(OutFile,'wb')
 headers = 'qid WChoice NumMachine NumForEach k LevelRs Pivots RepeatTime MatCost NaiveCost Cost QCost'.split()
 dw = csv.DictWriter(fout,headers,restval='NULL');
@@ -60,12 +60,12 @@ dw.writeheader()
 fout.close()
 
 seed(302)
-MaxNumMach = 5000;
-MaxNumForEach = 200;
+MaxNumMach = 2000;
+MaxNumForEach = 500;
 #WeightPath = HomePath+'trans_flickr/'+str(FeaType)+'/'+str(MaxNumForEach)+'_'+str(MaxNumMach)+'/'
 FeaLen = data.shape[1]
 Total = data.shape[0]
-RepeatTime = 1000;
+RepeatTime = 100;
 QList = sample(xrange(Total), RepeatTime)
 
 #################################################################################
@@ -74,8 +74,8 @@ QList = sample(xrange(Total), RepeatTime)
 # Para for Exp 0605.
 kList = [1,10,20]
 NumForEachList = [MaxNumForEach]
-NumMachList = [4000,4500,5000]; #2
-WChoiceList = [1]   #0
+NumMachList = [500, 2000];#0
+WChoiceList = [1] #0
 """
 
 # Para for testing.

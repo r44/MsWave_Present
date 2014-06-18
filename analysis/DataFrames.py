@@ -17,7 +17,7 @@ class DataFrames:
         NumForEachDict = collections.defaultdict(bool)
         WeiDict = collections.defaultdict(bool)
         TimeDict = collections.defaultdict(bool)
-
+        self.NumLevel = 0
         data = list()
         with open(filename,'rb') as csvfile:
             reader = csv.DictReader(csvfile)
@@ -35,7 +35,7 @@ class DataFrames:
                 rowdict['WChoice'] = Wei;
                 rowdict['RepeatTime'] = Timeidx;
                 rowdict['Pivots'] = Pivots;
-                self.NumLevel = len(Pivots)
+                self.NumLevel = max(len(Pivots),self.NumLevel)
                 rowdict['LevelRs'] = LevelRs;
                 rowdict['Cost'] = int(rowdict['Cost'])
                 rowdict['QCost'] = int(rowdict['QCost'])

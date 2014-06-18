@@ -18,7 +18,8 @@ def main():
     ExpPath = '/nfs/master/01/r01922165/zzzzz/Results/'
     ExpDir = 'Exp0605/'
     ExpDir = '0605_copy/'
-    DataType = 2
+    ExpDir = 'Exp0614/'
+    DataType = 1
     if DataType == 1:
         ExpData = 'ANN_SIFT/'
         MaxNumMachine = 5000; MaxNumForEach = 200;
@@ -28,19 +29,33 @@ def main():
     else:
         exit()
 
-    ExpSize = str(MaxNumForEach)+'_'+str(MaxNumMachine)+'/'
-    MethodChoice = 0;
+    #ExpSize = str(MaxNumForEach)+'_'+str(MaxNumMachine)+'/'
+    MethodChoice = 2;
     if MethodChoice == 0:
         Method = 'New/'
     elif MethodChoice ==1:
         Method = 'MsWave/'
+    elif MethodChoice ==2:
+        Method = 'Coord/'
     else:
         exit()
     FeaType = 1;
-    File = str(FeaType)+'_0605.csv'
+    #File = str(FeaType)+'_0605.csv'
     #File = '0605_above2k.csv'
-    AnalyzeFile(ExpPath+ExpDir+ExpData+ExpSize+Method+File);
-
+    #AnalyzeFile(ExpPath+ExpDir+ExpData+ExpSize+Method+File);
+    File = '0614_20_1k.csv'
+    print File
+    AnalyzeFile(ExpPath+ExpDir+ExpData+Method+File);
+    File = '0614_21_1k.csv'
+    print File
+    AnalyzeFile(ExpPath+ExpDir+ExpData+Method+File);
+    """
+    for i in range(3):
+        for j in range(2):
+            File = '0614_'+str(i)+str(j)+'.csv'
+            print File
+            AnalyzeFile(ExpPath+ExpDir+ExpData+Method+File);
+    """
     print 'ker'
 
 if __name__ == '__main__':
