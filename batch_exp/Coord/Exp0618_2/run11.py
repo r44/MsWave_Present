@@ -151,6 +151,8 @@ for WChoice in WChoiceList:
                     dw.writerow(record)
                     fout.close()
 
+
+
                     level_rs_est = update_pivot( [NumMach]+level_rs, [0]+pivot[0], cnt, level_rs_est )
                     cnt += 1
                     new_pivot = cd.CoordDescent(level_rs_est, pivot[0])

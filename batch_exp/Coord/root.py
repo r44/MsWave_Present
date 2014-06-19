@@ -15,7 +15,7 @@ class root:
         self.query = query
 
         T = query[0].shape[1]
-        
+
         self.pivot = pivot
 
         self.level = 0
@@ -25,7 +25,7 @@ class root:
         self.rs[siteid] = 0
         s = 0
         e = self.pivot[siteid][0]
-        
+
         qssum = [numpy.linalg.norm(self.query[siteid][i,e:], ord='fro')**2 for i in range(self.query[siteid].shape[0])]
         return self.query[siteid][:,0:e], 0, e, qssum, self.k
 
@@ -37,7 +37,7 @@ class root:
         else:
             s = self.pivot[siteid][-1]
             e = self.pivot[siteid][-1]
-        
+
         return self.query[siteid][:,s:e], s, e
 
     def prp1(self, ub):
@@ -61,7 +61,7 @@ class root:
         self.rc = 0
         self.level += 1
         self.ub = []
-    
+
     def remainsite(self):
         return self.rs
 

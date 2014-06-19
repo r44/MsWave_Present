@@ -25,7 +25,7 @@ def update_pivot(level_rs, pivot, cnt, level_rs_est):
     tmp = f( range(0,len(level_rs_est)) )
     return [ (cnt*old + new)/(cnt+1) for (old,new) in zip(level_rs_est, tmp) ]
 
-    
+
 
 #main
 #################################################################################
@@ -122,7 +122,7 @@ for WChoice in WChoiceList:
                     cand[j] = ((data[j]*WDict[mid]).tolist())[0]
                 sites[mid] = Site(mid, cand.keys(), cand)
 
-            
+
             for k in kList:
                 record['k'] = k
 
@@ -132,10 +132,10 @@ for WChoice in WChoiceList:
                     qid = QList[time]
                     record['qid'] = qid
                     query = dict()
-                    
+
                     for mid in range(NumMach):
                         query[mid] = matrix(data[qid])*WDict[mid]
-                    
+
                     ans, cost, level_rs, qcost =  MsWave(k, query, sites, pivot)
                     naive = size(query[0])*NumMach + NumMach*k + k
                     record['Cost'] = cost
