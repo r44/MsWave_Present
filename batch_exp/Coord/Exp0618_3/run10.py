@@ -54,7 +54,7 @@ elif FeaType == 5:
     data = (spio.loadmat(dfsdHomePath+FlickDir+'5_EdgeHist150'))['data']
 OutFile = OutPath+str('0618_10.csv')
 fout = open(OutFile,'wb')
-headers = 'qid WChoice NumMachine NumForEach k LevelRs Pivots RepeatTime MatCost NaiveCost Cost QCost'.split()
+headers = 'qid WChoice NumMachine NumForEach k LevelRs Pivots RepeatTime MatCost NaiveCost Cost QCost EstResSite'.split()
 dw = csv.DictWriter(fout,headers,restval='NULL');
 dw.writeheader()
 fout.close()
@@ -154,6 +154,10 @@ for WChoice in WChoiceList:
 
 
                     level_rs_est = update_pivot( [NumMach]+level_rs, [0]+pivot[0], cnt, level_rs_est )
+                    if time % 100 == 0:
+                        record[EstResSite] = _.join(map(lambda x:str(round(x,4)),level_rs_est))
+                    else:
+                        record[EstResSite] = -1;
                     cnt += 1
                     new_pivot = cd.CoordDescent(level_rs_est, pivot[0])
                     for g in range(NumMach):
