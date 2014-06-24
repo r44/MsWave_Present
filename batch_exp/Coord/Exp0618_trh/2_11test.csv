@@ -1,0 +1,2 @@
+qid,WChoice,NumMachine,NumForEach,k,LevelRs,Pivots,RepeatTime,MatCost,NaiveCost,Cost,QCost,EstResSite
+959591,2_heur/,1000,500,1,544_250_192_129_63_34_16_8_2_1,42_84_126_168_210_252_294_336_378_420,0,87990,421001,104949,93996,NULL
