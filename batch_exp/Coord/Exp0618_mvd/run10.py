@@ -41,7 +41,7 @@ FlickDir = 'Dataset/Image/Flickr/flickr/ParsedData/'
 #WeightPath = HomePath+'trans_ANN/Weights/200_5000/'
 #WeightPath = HomePath+'trans_flickr/2/500_2000/'
 WeightPath = HomePath+'trans_sound/1/500_1900/'
-OutPath = HomePath+'Results/Exp0618/sound_mvd/'
+OutPath = HomePath+'Results/Exp0623/sound_mvd/'
 #OutPath = HomePath+'Results/Exp0614/ANN_SIFT/Coord/'
 FeaType = 0
 if FeaType == 1:
@@ -155,10 +155,9 @@ for WChoice in WChoiceList:
 
                     level_rs_est = update_pivot( [NumMach]+level_rs, [0]+pivot[0], cnt, level_rs_est )
                     if time % 100 == 0:
-                        record[EstResSite] = _.join(map(lambda x:str(round(x,4)),level_rs_est))
+                        record['EstResSite'] = '_'.join(map(lambda x:str(round(x,4)),level_rs_est))
                     else:
-                        record[EstResSite] = -1;
-                    print level_rs_est
+                        record['EstResSite'] = -1;
                     cnt += 1
                     new_pivot = cd.CoordDescent(level_rs_est, pivot[0])
                     for g in range(NumMach):

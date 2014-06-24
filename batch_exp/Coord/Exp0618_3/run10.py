@@ -39,7 +39,7 @@ FlickDir = 'Dataset/Image/Flickr/flickr/ParsedData/'
 #WeightPath = HomePath+'trans_ANN/Weights/500_400/'
 #WeightPath = HomePath+'trans_ANN/Weights/200_5000/'
 WeightPath = HomePath+'trans_flickr/3/500_2000/'
-OutPath = HomePath+'Results/Exp0618/Flickr_3/'
+OutPath = HomePath+'Results/Exp0623/Flickr_3/'
 #OutPath = HomePath+'Results/Exp0614/ANN_SIFT/Coord/'
 FeaType = 3
 if FeaType == 1:
@@ -52,7 +52,7 @@ elif FeaType == 4:
     data = (spio.loadmadfasdt(HomePath+FlickDir+'4_HomoText43'))['data']
 elif FeaType == 5:
     data = (spio.loadmat(dfsdHomePath+FlickDir+'5_EdgeHist150'))['data']
-OutFile = OutPath+str('0618_10.csv')
+OutFile = OutPath+str('0623_10.csv')
 fout = open(OutFile,'wb')
 headers = 'qid WChoice NumMachine NumForEach k LevelRs Pivots RepeatTime MatCost NaiveCost Cost QCost EstResSite'.split()
 dw = csv.DictWriter(fout,headers,restval='NULL');
@@ -155,9 +155,9 @@ for WChoice in WChoiceList:
 
                     level_rs_est = update_pivot( [NumMach]+level_rs, [0]+pivot[0], cnt, level_rs_est )
                     if time % 100 == 0:
-                        record[EstResSite] = _.join(map(lambda x:str(round(x,4)),level_rs_est))
+                        record['EstResSite'] = '_'.join(map(lambda x:str(round(x,4)),level_rs_est))
                     else:
-                        record[EstResSite] = -1;
+                        record['EstResSite'] = -1;
                     cnt += 1
                     new_pivot = cd.CoordDescent(level_rs_est, pivot[0])
                     for g in range(NumMach):
