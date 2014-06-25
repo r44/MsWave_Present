@@ -10,11 +10,12 @@ from numpy import *
 from math import log
 import csv
 from scipy.interpolate import interp1d
-import CoordDescent as cd
+import CD as cd
 
 def gen_pivot(data):
     T = data.shape[1]
     # Origin
+    #pivot = [int(T/2+T/4*i) for i in range(40) if T/2+T/4*i <= T]
     pivot = [int(T/10+T/10*i) for i in range(40) if T/10+T/10*i <= T]
     pivot[-1] = T
     return pivot
@@ -34,25 +35,28 @@ def update_pivot(level_rs, pivot, cnt, level_rs_est):
 
 #data = (spio.loadmat('../LabelMe'))['data']
 HomePath = '/nfs/master/01/r01922165/zzzzz/'
-data = (spio.loadmat(HomePath+'ANNsift_base'))['data'].T
+#data = (spio.loadmat(HomePath+'ANNsift_base'))['data'].T
+data = (spio.loadmat(HomePath+'Dataset/Sound/Parsed/trh'))['data']
 FlickDir = 'Dataset/Image/Flickr/flickr/ParsedData/'
 #WeightPath = HomePath+'trans_ANN/Weights/500_400/'
 #WeightPath = HomePath+'trans_ANN/Weights/200_5000/'
-WeightPath = HomePath+'trans_flickr/3/500_2000/'
-OutPath = HomePath+'Results/Exp0618/Flickr_3/'
+#WeightPath = HomePath+'trans_flickr/2/500_2000/'
+WeightPath = HomePath+'trans_sound/5/500_1900/'
+OutPath = HomePath+'Results/Exp0623/sound_trh/'
 #OutPath = HomePath+'Results/Exp0614/ANN_SIFT/Coord/'
-FeaType = 3
+FeaType = 0
 if FeaType == 1:
     data = (spio.loadmat(HomePath+FlickDir+'1_ColorLayout192'))['data']
 elif FeaType == 2:
     data = (spio.loadmat(HomePath+FlickDir+'2_ColorStruct256'))['data']
 elif FeaType == 3:
-    data = (spio.loadmat(HomePath+FlickDir+'3_ScalColor256'))['data']
+    data = (spio.loadmatdsfdf(HomePath+FlickDir+'3_ScalColor256'))['data']
 elif FeaType == 4:
     data = (spio.loadmadfasdt(HomePath+FlickDir+'4_HomoText43'))['data']
 elif FeaType == 5:
     data = (spio.loadmat(dfsdHomePath+FlickDir+'5_EdgeHist150'))['data']
-OutFile = OutPath+str('0618_01.csv')
+#OutFile = OutPath+str('0623_00.csv')
+OutFile = str('10test.csv')
 fout = open(OutFile,'wb')
 headers = 'qid WChoice NumMachine NumForEach k LevelRs Pivots RepeatTime MatCost NaiveCost Cost QCost EstResSite'.split()
 dw = csv.DictWriter(fout,headers,restval='NULL');
@@ -60,7 +64,7 @@ dw.writeheader()
 fout.close()
 
 seed(302)
-MaxNumMach = 2000;
+MaxNumMach = 1900;
 MaxNumForEach = 500;
 #WeightPath = HomePath+'trans_flickr/'+str(FeaType)+'/'+str(MaxNumForEach)+'_'+str(MaxNumMach)+'/'
 FeaLen = data.shape[1]
@@ -74,8 +78,8 @@ QList = sample(xrange(Total), RepeatTime)
 # Para for Exp 0605.
 kList = [1,10,20]
 NumForEachList = [MaxNumForEach]
-NumMachList = [500, 2000] #0
-WChoiceList = [2] #1
+NumMachList = [1000, 1500];#1
+WChoiceList = [1] #0
 """
 
 # Para for testing.
@@ -150,8 +154,6 @@ for WChoice in WChoiceList:
                     dw = csv.DictWriter(fout,headers,restval='NULL');
                     dw.writerow(record)
                     fout.close()
-
-
 
                     level_rs_est = update_pivot( [NumMach]+level_rs, [0]+pivot[0], cnt, level_rs_est )
                     if time % 100 == 0:

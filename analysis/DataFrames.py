@@ -23,7 +23,8 @@ class DataFrames:
             reader = csv.DictReader(csvfile)
             for rowdict in reader:
                 k = int(rowdict['k']); qid = int(rowdict['qid']); NumForEach = int(rowdict['NumForEach']);
-                NumMach = int(rowdict['NumMachine']); Wei = rowdict['WChoice']; Timeidx = int(rowdict['RepeatTime']);
+                NumMach = int(rowdict['NumMachine']);
+                Wei = rowdict['WChoice']; Timeidx = int(rowdict['RepeatTime']);
                 Pivots = [int(x) for x in rowdict['Pivots'].split('_')]; LevelRs = [int(x) for x in rowdict['LevelRs'].split('_')]
                 KDict[ k ] = QidDict[ qid ] = NumForEachDict[ NumForEach ] = NumMachDict[ NumMach ] = WeiDict[ Wei ] = TimeDict[ Timeidx ] = True
                 #data.append( (k,NumForEach,NumMach,Wei,Timeidx,qid,Pivots,LevelRs) )
