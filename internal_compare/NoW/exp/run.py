@@ -81,7 +81,7 @@ for mid in range(MaxNumMach):
     if boolTrans == 1:
         WDict[mid] = matrix( (spio.loadmat(HomePath+WeightPath+FeaName+'/' +'X_'+str(MaxNumForEach)+'_'+str(mid+1)))['X'] ).T
     else:
-        WDict[mid] = eye(FeaLen)
+        WDict[mid] = matrix(eye(FeaLen))
 print 'Read W done.'
 for NumMach in NumMachList:
     record['NumMachine']=NumMach;

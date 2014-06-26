@@ -81,7 +81,7 @@ for mid in range(MaxNumMach):
     if boolTrans == 1:
         WDict[mid] = matrix( (spio.loadmat(HomePath+WeightPath+FeaName+'/' +'X_'+str(MaxNumForEach)+'_'+str(mid+1)))['X'] ).T
     else:
-        WDict[mid] = np.eye(FeaLen)
+        WDict[mid] = matrix(eye(FeaLen))
 print 'Read W done.'
 for NumMach in NumMachList:
     record['NumMachine']=NumMach;
@@ -104,10 +104,7 @@ for NumMach in NumMachList:
             for j in range(s,e):
                 if j in QList:
                     continue
-                if boolTrans == 1:
-                    cand[j] = ((data[j]*WDict[mid]).tolist())[0]
-                else:
-                    cand[j] = ((data[j]).tolist())[0]
+                cand[j] = ((data[j]*WDict[mid]).tolist())[0]
             sites[mid] = Site(mid, cand.keys(), cand)
 
 

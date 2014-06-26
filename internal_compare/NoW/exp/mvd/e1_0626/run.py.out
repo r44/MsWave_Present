@@ -1,1 +1,2 @@
 qid,WChoice,NumMachine,NumForEach,k,LevelRs,Pivots,RepeatTime,MatCost,NaiveCost,Cost,QCost,EstResSite
+959591,NULL,200,500,1,200_200_200_200_200_200_200_200_200_1,42_84_126_168_210_252_294_336_378_420,0,87990,84201,92401,84000,NULL
