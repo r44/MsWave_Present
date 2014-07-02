@@ -23,7 +23,7 @@ def CoordDescent(EstResSite, Pivots):
 # EachLenD: The len of each segment dimension.
 
     StartD = Pivots[0];
-    EachLenD = 0 if len(Pivots) == 1 else Pivots[1] - Pivots[0];
+    EachLenD = 1 if len(Pivots) == 1 else Pivots[1] - Pivots[0];
     # Total len of vector.
     TotalD = len(EstResSite);
     best_obj = Loss(EstResSite, StartD, EachLenD)
@@ -43,7 +43,7 @@ def CoordDescent(EstResSite, Pivots):
                 flag1 = True
 
         # 1. Fix Start, Descent for EachLenD
-        beg = int(EachLenD/2.0)
+        beg = int(EachLenD/2.0) + 1
         fin = min(TotalD-StartD, EachLenD+beg)
         for d in xrange(beg,fin):
             tmp_obj = Loss(EstResSite, StartD, d)
