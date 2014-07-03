@@ -63,7 +63,7 @@ print "Init output file done."
 #################################################################################
 data = (spio.loadmat(HomePath+DataPath+FeaName))['data']
 seed(302)
-FeaLen = data.shape[1]; Total = data.shape[0]; RepeatTime = 100;
+FeaLen = data.shape[1]; Total = data.shape[0]; RepeatTime = 500;
 QList = sample(xrange(Total), RepeatTime)
 #################################################################################
 # Paramaters to be tuned.

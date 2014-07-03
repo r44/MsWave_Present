@@ -39,17 +39,17 @@ boolCD = int(sys.argv[2])
 #################################################################################
 FeaName = os.getcwd().split('/')[-2]
 if FeaName == 'time':
-    MaxNumForEach = 200;    MaxNumMach = 5000;
+    MaxNumForEach = 200;    MaxNumMach = 5000; StepRange = 500;
 elif FeaName == 'ANN':
-    MaxNumForEach = 200;    MaxNumMach = 5000;
+    MaxNumForEach = 200;    MaxNumMach = 5000; StepRange = 500;
 elif FeaName == 'f2':
-    MaxNumForEach = 500;    MaxNumMach = 2000;
+    MaxNumForEach = 500;    MaxNumMach = 2000; StepRange = 200;
 elif FeaName == 'f3':
-    MaxNumForEach = 500;    MaxNumMach = 2000;
+    MaxNumForEach = 500;    MaxNumMach = 2000; StepRange = 200;
 elif FeaName == 'mvd':
-    MaxNumForEach = 500;    MaxNumMach = 1900;
+    MaxNumForEach = 500;    MaxNumMach = 1900; StepRange = 200;
 elif FeaName == 'trh':
-    MaxNumForEach = 500;    MaxNumMach = 1900;
+    MaxNumForEach = 500;    MaxNumMach = 1900; StepRange = 200;
 else:
     print "FeaType Error.";    exit();
 #################################################################################
@@ -69,7 +69,7 @@ QList = sample(xrange(Total), RepeatTime)
 # Paramaters to be tuned.
 kList = [1,10,20]
 NumForEachList = [MaxNumForEach]
-NumMachList = [x for x in range(200,MaxNumMach+1,200)]
+NumMachList = [x for x in range(StepRange,MaxNumMach+1,StepRange)]
 NumMachList[-1] = MaxNumMach
 #################################################################################
 record = dict()
